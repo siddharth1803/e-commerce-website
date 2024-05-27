@@ -29,8 +29,8 @@ app.use((req, res, next) => {
     next()
 })
 
-const dbUrl = "mongodb://localhost:27017/product-app"
-// const dbUrl = process.env.DB_URL
+// const dbUrl = "mongodb://localhost:27017/product-app"
+const dbUrl = process.env.DB_URL
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
