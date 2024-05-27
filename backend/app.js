@@ -21,7 +21,7 @@ const User = require("./models/User")
 
 const app = express()
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.setHeader("Access-Control-Allow-Origin", "https://e-commerce-website-weld-alpha.vercel.app/");
     res.header(
         "Access-Control-Allow-Headers",
         "Origin,X-Requested-With,Content-Type,Accept"
@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 // const dbUrl = "mongodb://localhost:27017/product-app"
 const dbUrl = process.env.DB_URL
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://e-commerce-website-weld-alpha.vercel.app/",
     credentials: true
 }));
 
