@@ -86,7 +86,6 @@ router.post("/createProduct", isLoggedIn, upload.array("images"), isOwner,
                 return res.status(400).json({ success: false, error: "invalid category" })
             }
             const items = new ProductItems(req.body)
-            console.log(items)
             items.owner = req.user._id
             items.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
 

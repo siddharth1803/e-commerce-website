@@ -12,7 +12,6 @@ module.exports.isOwner = (req, res, next) => {
     // if (req.user.type === "admin") {
     //     return next()
     // }
-    console.log(req.user._id, req.body)
     if (req.user._id != req.body.owner) {
         next("you are not authorized for it")
     }

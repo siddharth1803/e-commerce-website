@@ -11,23 +11,23 @@ import UserContext from "../components/UserContext";
 export default function Product() {
     let dispatch = useDispatch();
     const location = useLocation();
-    let { state } = location;
+
+    let { search } = location;
+    const queryParams = new URLSearchParams(search);
+    const id = queryParams.get("id")
+
+    const category = queryParams.get("category")
     const { user } = useContext(UserContext);
 
-    const productData = state.productData
-    const [size, updateSize] = useState(productData.category == "garments" ? productData.sizes[0] : "")
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [state]);
 
     const [productItems, updateProductItems] = useState([])
     const [productItem, updateProductItem] = useState({})
+    const [size, updateSize] = useState(productItem.category == "garments" ? productItem.sizes[0] : "")
 
     const getProductItems = () => {
         axios.get(`${import.meta.env.VITE_API_BASE_URL}/productItems`, {
             params: {
-                category: productData.category
+                category: category
             }
         })
             .then((resp) => {
@@ -40,7 +40,7 @@ export default function Product() {
     const getProduct = () => {
         axios.get(`${import.meta.env.VITE_API_BASE_URL}/productItems/product`, {
             params: {
-                id: productData._id
+                id: id
             }
         })
             .then((resp) => {
@@ -53,11 +53,14 @@ export default function Product() {
     useEffect(() => {
         getProductItems()
         getProduct()
-    }, [])
+        window.scrollTo(0, 0);
+    }, [id])
     const updateRating = () => {
         getProduct()
     }
     const rating = (arr) => {
+        if (Object.keys(arr).length == 0)
+            return 0
         let sum = (arr.reviews.reduce((total, sum) => {
             return total + parseInt(sum.rating)
         }, 0)) / arr.reviews.length
@@ -88,9 +91,9 @@ export default function Product() {
 
                                 <div className="carousel-inner " id='carousel'>
                                     <div className="carousel-item active" >
-                                        <img src={productData.images?.[0]?.url || ""} className="d-block w-100  " style={{ filter: "brightness(70%)", height: "450px", objectFit: "cover" }} alt="..." />
+                                        <img src={productItem.images?.[0]?.url || ""} className="d-block w-100  " style={{ filter: "brightness(70%)", height: "450px", objectFit: "cover" }} alt="..." />
                                     </div>
-                                    {productData.images.slice(1).map((item, index) => {
+                                    {productItem.images && productItem.images.slice(1).map((item, index) => {
                                         return (<div key={index} className="carousel-item" >
                                             <img src={item.url} className="d-block w-100  " style={{ filter: "brightness(70%)", height: "450px", objectFit: "cover" }} alt="..." />
                                         </div>)
@@ -109,15 +112,15 @@ export default function Product() {
                         <div className="col-lg-6">
                             <div className="ps-lg-3">
                                 <h4 className="title text-dark">
-                                    {productData.name}
+                                    {productItem.name}
                                 </h4>
                                 <div className="d-flex flex-row my-3">
                                     <div className="text-warning mb-1 me-2 d-flex align-items-center">
                                         <Rating name="read-only"
-                                            value={rating(Object.keys(productItem).length ? productItem : productData)}
+                                            value={rating(productItem)}
                                             precision={0.5} readOnly />
                                         <span className="ms-1">
-                                            {rating(Object.keys(productItem).length ? productItem : productData).toFixed(1)}
+                                            {rating(productItem)}
                                         </span>
                                     </div>
 
@@ -125,27 +128,27 @@ export default function Product() {
                                     <span className="text-success ms-2">In stock</span>
                                 </div>
                                 <div className="mb-3">
-                                    <span className="h5">₹{productData.price}</span>
+                                    <span className="h5">₹{productItem.price}</span>
                                     <span className="text-muted">/per item</span>
                                 </div>
                                 <p>
-                                    {productData.description}
+                                    {productItem.description}
                                 </p>
                                 <div className="row">
                                     <dt className="col-3">Type:</dt>
-                                    <dd className="col-9">{productData.category.split("_")
+                                    <dd className="col-9">{productItem.category ? productItem.category.split("_")
                                         .filter(x => x.length > 0)
                                         .map((x) => (x.charAt(0).toUpperCase() + x.slice(1)))
-                                        .join(" ")}</dd>
+                                        .join(" ") : ""}</dd>
                                     <dt className="col-3">Color</dt>
-                                    <dd className="col-9">{productData.color}</dd>
+                                    <dd className="col-9">{productItem.color}</dd>
                                     <dt className="col-3">Material</dt>
-                                    <dd className="col-9">{productData.material}</dd>
+                                    <dd className="col-9">{productItem.material}</dd>
                                     <dt className="col-3">Brand</dt>
-                                    <dd className="col-9">{productData.brand}</dd>
+                                    <dd className="col-9">{productItem.brand}</dd>
                                 </div>
                                 <hr />
-                                {productData.category == "garments" && <div className="row mb-4">
+                                {productItem.category == "garments" && <div className="row mb-4">
                                     <div className="col-md-4 col-6">
                                         <label className="mb-2">Size</label>
                                         <select className="form-select border border-secondary"
@@ -153,7 +156,7 @@ export default function Product() {
                                             value={size}
                                             onChange={(e) => { updateSize(e.target.value) }}
                                             style={{ height: "35px" }}>
-                                            {productData.sizes.map((item, index) => {
+                                            {productItem.sizes.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item}>{item}</option>
                                                 )
@@ -254,7 +257,7 @@ export default function Product() {
                                             role="tabpanel"
                                             aria-labelledby="ex1-tab-1">
                                             <p>
-                                                {productData.description}
+                                                {productItem.description}
                                             </p>
                                             <div className="row mb-2">
                                                 <div className="container">
@@ -262,7 +265,7 @@ export default function Product() {
                                                         <div className="col-6">
                                                             <ul className="list-group">
                                                                 <li className="list-group-item list-group-item-info">Hot Features</li>
-                                                                {productData.features.map((item, index) => {
+                                                                {productItem.features && productItem.features.map((item, index) => {
                                                                     return (<li key={index} className="list-group-item">{item}</li>
                                                                     )
                                                                 })}
@@ -271,7 +274,7 @@ export default function Product() {
                                                         <div className="col-6">
                                                             <ul className="list-group">
                                                                 <li className="list-group-item list-group-item-info">Specifications</li>
-                                                                {productData.specifications.map((item, index) => {
+                                                                {productItem.specifications && productItem.specifications.map((item, index) => {
                                                                     return (<li key={index} className="list-group-item">{item}</li>
                                                                     )
                                                                 })}
@@ -289,7 +292,7 @@ export default function Product() {
                                             role="tabpanel"
                                             aria-labelledby="ex1-tab-2"
                                         >
-                                            {productData.warrantyInfo}
+                                            {productItem.warrantyInfo}
                                         </div>
                                         <div
                                             className="tab-pane fade mb-2"
@@ -366,9 +369,11 @@ export default function Product() {
                                             </div>
                                             <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                                 <div className="text-center">
-                                                    <Link to={"/product"} state={{ productData: productItem }} className="btn btn-outline-dark mt-auto">
+                                                    <Link to={`/product?id=${productItem._id}&category=${productItem.category}`}
+                                                        className="btn btn-outline-dark mt-auto">
                                                         View
                                                     </Link>
+
 
                                                 </div>
                                             </div>

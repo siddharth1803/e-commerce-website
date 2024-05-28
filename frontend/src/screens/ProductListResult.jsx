@@ -9,17 +9,19 @@ import UserContext from "../components/UserContext";
 
 export default function ProductListResult() {
     const location = useLocation();
-    const { state } = location;
     const ratings = [0, 1, 2, 3, 4, 5]
     const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
     const { user } = useContext(UserContext);
+    let { search } = location;
+    const queryParams = new URLSearchParams(search);
+    const category = queryParams.get("category")
 
     const [productItems, updateProductItems] = useState([])
 
     const getProductItems = () => {
         axios.get(`${import.meta.env.VITE_API_BASE_URL}/productItems`, {
             params: {
-                category: state
+                category: category
             }
         })
             .then((resp) => {
@@ -194,7 +196,7 @@ export default function ProductListResult() {
                                     </div>
                                 </div>
                             </div>
-                            {state === "garments" && (
+                            {category === "garments" && (
                                 <div className="accordion-item">
                                     <h2 className="accordion-header" id="headingFour">
                                         <button

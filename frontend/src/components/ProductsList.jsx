@@ -10,6 +10,8 @@ export default function ProductsList({ productItem }) {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
+
+
     let dispatch = useDispatch();
     const handleAddToCart = () => {
         dispatch(addItem({
@@ -98,7 +100,7 @@ export default function ProductsList({ productItem }) {
                             </div>
                             <h6 className="text-success">Free shipping</h6>
                             <div className="d-flex flex-column mt-4">
-                                <Link to={"/product"} state={{ productData: productItem }} className="btn btn-primary btn-sm">Details</Link>
+                                <Link to={`/product?id=${productItem._id}&category=${productItem.category}`} state={{ productData: productItem }} className="btn btn-primary btn-sm">Details</Link>
                                 <button onClick={handleAddToCart} className="btn btn-outline-primary btn-sm mt-1" type="button">
                                     Add to Cart
                                 </button>

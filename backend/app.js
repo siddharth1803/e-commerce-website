@@ -20,7 +20,7 @@ const User = require("./models/User")
 
 const app = express()
 
-app.set('trust proxy', 1); // trust first proxy
+app.set('trust proxy', 1);
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", process.env.FE_URL);

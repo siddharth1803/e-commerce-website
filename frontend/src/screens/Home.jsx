@@ -83,7 +83,8 @@ export default function Home() {
                                                         </div>
                                                         <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                                             <div className="text-center">
-                                                                <Link to={"/product"} state={{ productData: item }} className="btn btn-outline-dark mt-auto">
+                                                                <Link to={`/product?id=${item._id}&category=${item.category}`}
+                                                                    className="btn btn-outline-dark mt-auto">
                                                                     View
                                                                 </Link>
                                                             </div>
