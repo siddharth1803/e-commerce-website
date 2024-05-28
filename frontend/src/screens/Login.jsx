@@ -38,7 +38,7 @@ export default function Login() {
     let url = `${import.meta.env.VITE_API_BASE_URL}/loginUser`
     return (
         <div className="container m-5">
-            <form method="post" action={url} onSubmit={handleLogin}>
+            <form method="post" action={url}>
                 <div className="form-group">
                     <label htmlFor="username">Username/Email</label>
                     <input
