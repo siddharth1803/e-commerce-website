@@ -18,19 +18,18 @@ const passport = require("passport")
 const LocalStratergy = require("passport-local")
 const User = require("./models/User")
 
-
 const app = express()
+
+app.set('trust proxy', 1); // trust first proxy
+
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "https://e-commerce-website-weld-alpha.vercel.app");
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin,X-Requested-With,Content-Type,Accept"
-    );
-    next()
+    res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept");
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
 })
 
-// const dbUrl = "mongodb://localhost:27017/product-app"
-const dbUrl = process.env.DB_URL
+const dbUrl = process.env.DB_URL;
 app.use(cors({
     origin: "https://e-commerce-website-weld-alpha.vercel.app",
     credentials: true
@@ -48,16 +47,15 @@ const sessionConfig = {
     store,
     secret: process.env.COOKIE_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === 'production', // Only secure in production
         sameSite: "lax",
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7,
     }
 }
-
 
 app.use(session(sessionConfig))
 app.use(passport.initialize())
