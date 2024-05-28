@@ -40,7 +40,7 @@ export default function ProductsList({ productItem }) {
     return (
         <>
             <section style={{ backgroundColor: "#eee" }}>
-                <div className="card shadow-0 border rounded-3">
+                <div className="card shadow-0 border rounded-3" >
 
                     <div className="row">
                         <div className="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
@@ -99,15 +99,15 @@ export default function ProductsList({ productItem }) {
                             <h6 className="text-success">Free shipping</h6>
                             <div className="d-flex flex-column mt-4">
                                 <Link to={"/product"} state={{ productData: productItem }} className="btn btn-primary btn-sm">Details</Link>
-                                <button onClick={handleAddToCart} className="btn btn-outline-primary btn-sm mt-2" type="button">
+                                <button onClick={handleAddToCart} className="btn btn-outline-primary btn-sm mt-1" type="button">
                                     Add to Cart
                                 </button>
-                                {user.loggedIn && user.userId == productItem.owner && <div>
-                                    <Link to={"/addeditproduct"} state={{ productItem: productItem }} className="btn btn-danger btn-sm mt-2">Edit</Link>
-                                    <button onClick={() => handleDelete(productItem._id)} className="btn btn-danger btn-sm mt-2" type="button">
+                                {user.loggedIn && user.userId == productItem.owner && <>
+                                    <Link to={"/addeditproduct"} state={{ productItem: productItem }} className="btn btn-danger btn-sm mt-1">Edit</Link>
+                                    <button onClick={() => handleDelete(productItem._id)} className="btn btn-danger btn-sm mt-1" type="button">
                                         Delete
                                     </button>
-                                </div>}
+                                </>}
                             </div>
                         </div>
                     </div>

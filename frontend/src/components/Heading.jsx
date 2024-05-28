@@ -4,18 +4,19 @@ import Carousel from "./Carousel"
 
 export default function Heading({ productCategories }) {
     return (<>
-        <div className=" bg-body-secondary">
-            <div className="d-flex" >
-                {productCategories.slice(0, 10).map((items, index) => {
-                    return (<div key={index} className="col">
+        <div className="bg-body-secondary">
+            <div className="d-flex flex-wrap flex-sm-column flex-md-row">
+                {productCategories.slice(0, 10).map((items, index) => (
+                    <div key={index} className="col">
                         <Link to={"/productList"} state={items.category} className="border-0 d-block text-center text-decoration-none">
-                            <img src={items.imageUrl} className="img-fluid " alt="Grocery" style={{ width: "80px", height: "80px" }} />
+                            <img src={items.imageUrl} className="img-fluid" alt="Grocery" style={{ width: "80px", height: "80px" }} />
                             <span className="text-dark d-block">{items.name}</span>
                         </Link>
-                    </div>)
-                })}
+                    </div>
+                ))}
             </div>
         </div>
+
         <div>
             <div className="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-secondary">
                 <div className="row">
