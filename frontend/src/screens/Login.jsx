@@ -20,44 +20,43 @@ export default function Login() {
     };
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-        axios.post(`${import.meta.env.VITE_API_BASE_URL}/loginUser`, fieldValues,
-            { headers: { "Content-Type": "application/json" }, withCredentials: true }
-        ).then(response => {
-            if (response.data.success) {
-                login({ userType: response.data.type, email: response.data.email, loggedIn: true })
-                navigate("/");
-            }
-        }).catch(error => {
-            console.log(error)
-        })
+        navigate("/")
+        // e.preventDefault();
+        // axios.post(`${import.meta.env.VITE_API_BASE_URL}/loginUser`, fieldValues,
+        //     { headers: { "Content-Type": "application/json" }, withCredentials: true }
+        // ).then(response => {
+        //     if (response.data.success) {
+        //         login({ userType: response.data.type, email: response.data.email, loggedIn: true })
+        //         navigate("/");
+        //     }
+        // }).catch(error => {
+        //     console.log(error)
+        // })
     };
+    {/* <form>onSubmit={handleLogin} */ }
 
+    let url = `${import.meta.env.VITE_API_BASE_URL}/loginUser`
     return (
         <div className="container m-5">
-            <form onSubmit={handleLogin}>
+            <form method="post" action={url} onSubmit={handleLogin}>
                 <div className="form-group">
                     <label htmlFor="username">Username/Email</label>
                     <input
                         type="text"
-                        onChange={updateFieldValues}
                         className="form-control"
                         id="username"
                         placeholder="username/email"
                         name="username"
-                        value={fieldValues.username}
                     />
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
                     <input
                         type="password"
-                        onChange={updateFieldValues}
                         className="form-control"
                         id="password"
                         placeholder="Password"
                         name="password"
-                        value={fieldValues.password}
                     />
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>

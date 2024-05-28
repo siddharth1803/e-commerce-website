@@ -23,7 +23,7 @@ const app = express()
 app.set('trust proxy', 1); // trust first proxy
 
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://e-commerce-website-weld-alpha.vercel.app");
+    res.setHeader("Access-Control-Allow-Origin", process.env.FE_URL);
     res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept");
     res.header("Access-Control-Allow-Credentials", "true");
     next();
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 
 const dbUrl = process.env.DB_URL;
 app.use(cors({
-    origin: "https://e-commerce-website-weld-alpha.vercel.app",
+    origin: process.env.FE_URL,
     credentials: true
 }));
 
@@ -51,7 +51,7 @@ const sessionConfig = {
     cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', // Only secure in production
-        sameSite: "lax",
+        sameSite: "Lax",
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7,
     }
@@ -66,6 +66,7 @@ passport.deserializeUser(User.deserializeUser())
 app.use(express.json())
 app.use(morgan("tiny"))
 app.use(cookies())
+app.use(express.urlencoded({ extended: true }))
 
 mongoose.connect(dbUrl).then(() => {
     console.log("connected")

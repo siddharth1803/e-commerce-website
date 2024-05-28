@@ -22,7 +22,9 @@ router.post("/createUser", [
     async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            return res.status(400).json({ success: false, error: errors.array() })
+            // return res.status(400).json({ success: false, error: errors.array() })
+            return res.redirect(`${process.env.FE_URL}/signup`);
+
         }
         try {
             const body = req.body
@@ -32,12 +34,15 @@ router.post("/createUser", [
             req.login(newUser, (err) => {
                 if (err)
                     return next(err);
-                return res.json({ success: true, email: user.email, username: user.username, type: "user" })
+                return res.redirect(`${process.env.FE_URL}`);
+                // return res.json({ success: true, email: user.email, username: user.username, type: "user" })
             })
 
 
         } catch (error) {
-            return res.status(500).json({ success: false, error: error })
+            console.log(error)
+            return res.redirect(`${process.env.FE_URL}/signup`);
+            // return res.status(500).json({ success: false, error: error })
         }
     })
 
@@ -48,13 +53,18 @@ router.post('/loginUser', modifyUsername, (req, res, next) => {
             return next(err)
         }
         if (!user) {
-            return res.status(400).json({ success: false, message: "incorrect credentials" })
+            res.status(400)
+            return res.redirect(`${process.env.FE_URL}/login`);
+            // return res.status(400).json({ success: false, message: "incorrect credentials" })
         }
         req.login(user, err => {
             if (err) {
-                return next(err);
+                // next(err);
+                return res.redirect(`${process.env.FE_URL}/login`);
+
             }
-            return res.status(200).json({ success: true, email: user.email, username: user.username, type: user.type });
+            // return res.status(200).json({ success: true, email: user.email, username: user.username, type: user.type })
+            return res.redirect(`${process.env.FE_URL}`);
         });
     })(req, res, next);
 })

@@ -21,11 +21,12 @@ module.exports.isOwner = (req, res, next) => {
 
 module.exports.modifyUsername = async (req, res, next) => {
     const username = req.body.username
-    if (!username)
-        return next("incorrect credentials")
+    // if (!username)
+    //     return next("incorrect credentials")
     const userData = await User.findOne({ $or: [{ username: username }, { email: username }] })
     if (!userData)
-        return next("incorrect credentials")
-    req.body.username = userData.username
+        req.body.username = ""
+    else
+        req.body.username = userData.username
     next()
 }

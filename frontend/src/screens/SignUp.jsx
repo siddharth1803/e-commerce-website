@@ -38,26 +38,26 @@ export default function SignUp() {
 
     return (
         <div className="container m-5">
-            <form onSubmit={handleSubmit}>
+            <form method="post" action={`${import.meta.env.VITE_API_BASE_URL}/createUser`}>
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
-                    <input type="text" onChange={updatefieldValues} className="form-control" id="name" placeholder="Name" name="name" value={fieldValues.name} />
+                    <input type="text" className="form-control" id="name" placeholder="Name" name="name" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
-                    <input type="text" onChange={updatefieldValues} className="form-control" id="username" placeholder="Username" name="username" value={fieldValues.username} />
+                    <input type="text" className="form-control" id="username" placeholder="Username" name="username" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="email">Email</label>
-                    <input type="email" onChange={updatefieldValues} className="form-control" id="email" placeholder="Email" name="email" value={fieldValues.email} />
+                    <input type="email" className="form-control" id="email" placeholder="Email" name="email" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="location">Location</label>
-                    <input type="text" onChange={updatefieldValues} className="form-control" id="location" placeholder="Location" name="location" value={fieldValues.location} />
+                    <input type="text" className="form-control" id="location" placeholder="Location" name="location" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input type="password" onChange={updatefieldValues} className="form-control" id="password" placeholder="Password" name="password" value={fieldValues.password} />
+                    <input type="password" className="form-control" id="password" placeholder="Password" name="password" />
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
                 <Link to="/login" className="m-3 btn btn-success">Already a User</Link>
